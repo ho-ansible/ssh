@@ -18,6 +18,17 @@
   - ssh_config
   notify: restart ssh
 
+- name: OpenSSH | iptables
+  tags:
+    - iptables
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW
+    destination_port: "{{ ssh_port }}"
+    jump: ACCEPT
+  notify: save iptables
+
 - name: OpenSSH | service
   tags:
   - service
