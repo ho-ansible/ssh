@@ -22,11 +22,13 @@
   tags:
     - iptables
   iptables:
+    ip_version: "{{ item }}"
     chain: INPUT
     protocol: tcp
     ctstate: NEW
     destination_port: "{{ ssh_port }}"
     jump: ACCEPT
+  with_items: [ ipv4, ipv6 ]
   notify: save iptables
 
 - name: OpenSSH | service
