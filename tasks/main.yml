@@ -22,13 +22,14 @@
   tags:
     - iptables
   iptables:
-    ip_version: "{{ item }}"
+    ip_version: "{{ item | ipv4 | ternary('ipv4', 'ipv6') }}"
     chain: INPUT
     protocol: tcp
     ctstate: NEW
     destination_port: "{{ ssh_port }}"
+    source: "{{ item }}"
     jump: ACCEPT
-  with_items: [ ipv4, ipv6 ]
+  with_items: "{{ ssh_whitelist | ipaddr }}"
   notify: save iptables
 
 - name: OpenSSH | service
