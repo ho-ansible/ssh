@@ -30,7 +30,7 @@
     source: "{{ item }}"
     jump: ACCEPT
   with_items: "{{ ssh_whitelist | ipaddr }}"
-  notify: save iptables
+  notify: iptables
 
 - name: OpenSSH | service
   tags:
