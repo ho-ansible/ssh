@@ -2,7 +2,6 @@
 # {{ ansible_managed }}
 
 Port {{ ssh_port }}
-Protocol 2
 
 # See https://cipherli.st/
 HostKey /etc/ssh/ssh_host_ed25519_key
@@ -11,34 +10,25 @@ KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
-UsePrivilegeSeparation yes
-
-SyslogFacility AUTH
-LogLevel INFO
+AuthenticationMethods publickey
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
 
 PermitRootLogin no
 StrictModes yes
-UsePAM yes
 
-LoginGraceTime 60
+LoginGraceTime 30
 MaxAuthTries 4
 MaxStartups 4:25:10
 
-PubkeyAuthentication yes
-
-IgnoreRhosts yes
-HostbasedAuthentication no
-PermitEmptyPasswords no
-ChallengeResponseAuthentication no
-PasswordAuthentication no
+TCPKeepAlive no
+ClientAliveInterval 60
+ClientAliveCountMax 5
 
 X11Forwarding no
-PrintMotd no
+PrintMotd yes
 PrintLastLog yes
-TCPKeepAlive no
-ClientAliveInterval 15
-ClientAliveCountMax 20
-
 AcceptEnv LANG LC_*
 
-Subsystem sftp /usr/lib/openssh/sftp-server
+Subsystem sftp internal-sftp
