@@ -13,9 +13,9 @@
   template:
     src: "{{ item }}.j2"
     dest: "/etc/ssh/{{ item }}"
-  with_items:
-  - sshd_config
-  - ssh_config
+  loop:
+    - sshd_config
+    - ssh_config
   notify: restart ssh
 
 - name: OpenSSH | iptables
@@ -29,7 +29,7 @@
     destination_port: "{{ ssh_port }}"
     source: "{{ item }}"
     jump: ACCEPT
-  with_items: "{{ ssh_whitelist | ipaddr }}"
+  loop: "{{ q('list', ssh_whitelist | ipaddr) }}"
   notify: iptables
 
 - name: OpenSSH | service
