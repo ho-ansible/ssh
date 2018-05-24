@@ -29,7 +29,7 @@
     destination_port: "{{ ssh_port }}"
     source: "{{ item }}"
     jump: ACCEPT
-  loop: "{{ q('list', ssh_whitelist | ipaddr) }}"
+  loop: "{{ ssh_whitelist | ipaddr }}"
   notify: iptables
 
 - name: OpenSSH | service
