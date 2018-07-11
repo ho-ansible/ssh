@@ -3,3 +3,4 @@ ssh_port: 22
 ssh_whitelist:
   - 0.0.0.0/0
   - "::/0"
+ssh_extra_cfg: ""
