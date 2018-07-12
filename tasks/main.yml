@@ -7,16 +7,20 @@
     name: openssh-server
   notify: restart ssh
 
-- name: OpenSSH | config
+- name: OpenSSH | server config
   tags:
-  - config
+    - config
   template:
-    src: "{{ item }}.j2"
-    dest: "/etc/ssh/{{ item }}"
-  loop:
-    - sshd_config
-    - ssh_config
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
   notify: restart ssh
+
+- name: OpenSSH | client config
+  tags:
+    - config
+  template:
+    src: ssh_config.j2
+    dest: /etc/ssh/ssh_config
 
 - name: OpenSSH | iptables
   tags:
