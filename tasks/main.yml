@@ -29,7 +29,6 @@
     ip_version: "{{ item | ipv4 | ternary('ipv4', 'ipv6') }}"
     chain: INPUT
     protocol: tcp
-    ctstate: NEW
     destination_port: "{{ ssh_port }}"
     source: "{{ item }}"
     jump: ACCEPT
