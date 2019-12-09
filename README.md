@@ -7,11 +7,11 @@ Only tested on Debian stable, for now.
 ## Role variables
 + `ssh_port` (default: 22): TCP port server listens on
 + `ssh_whitelist` (default: all): allow (via firewall) only these
-  hosts to connect to server.  Either IPv4 or IPv6 are ok.
+  hosts/subnets to connect to server.  Either IPv4 or IPv6 are ok.
 + `ssh_extra_cfg`: any extra lines to put in client config
 
 ## Dependencies
-+ ho-ansible.iptables
+None.
 
 ## Regenerating host keys
 This should be done by the openssh package already:

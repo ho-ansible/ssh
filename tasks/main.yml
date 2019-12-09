@@ -1,41 +1,33 @@
 ---
 
-- name: OpenSSH | package
+- name: ssh | package
   tags:
   - package
   package:
     name: openssh-server
   notify: restart ssh
 
-- name: OpenSSH | server config
+- name: ssh | systemd service drop-in dir
+  file:
+    path: "{{ ssh_dropin }}"
+    state: directory
+
+- name: ssh | config
   tags:
     - config
   template:
-    src: sshd_config.j2
-    dest: /etc/ssh/sshd_config
+    src: "{{ item.src }}.j2"
+    dest: "{{ item.dst }}/{{ item.src }}"
+  loop:
+    - src: sshd_config
+      dst: /etc/ssh
+    - src: ssh_config
+      dst: /etc/ssh
+    - src: iptables.conf
+      dst: "{{ ssh_dropin }}"
   notify: restart ssh
 
-- name: OpenSSH | client config
-  tags:
-    - config
-  template:
-    src: ssh_config.j2
-    dest: /etc/ssh/ssh_config
-
-- name: OpenSSH | iptables
-  tags:
-    - iptables
-  iptables:
-    ip_version: "{{ item | ipv4 | ternary('ipv4', 'ipv6') }}"
-    chain: INPUT
-    protocol: tcp
-    destination_port: "{{ ssh_port }}"
-    source: "{{ item }}"
-    jump: ACCEPT
-  loop: "{{ ssh_whitelist | ipaddr }}"
-  notify: iptables
-
-- name: OpenSSH | service
+- name: ssh | service
   tags:
   - service
   service:
