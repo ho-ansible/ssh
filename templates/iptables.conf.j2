@@ -3,6 +3,8 @@
 {% for addr in ssh_whitelist | ipaddr %}
 {%   set ipt = 'iptables' if addr | ipv4 else 'ip6tables' %}
 {%   set ipt = '/usr/sbin/' ~ ipt %}
-{%   set ct = '-m conntrack --ctstate NEW' if addr | ipv4 else '' %}
-ExecStartPre=!{{ ipt }} -A INPUT -s {{ addr }} -p tcp --dport  {{ ssh_port }} {{ ct }} -j ACCEPT
+{%   set ct = ' -m conntrack --ctstate NEW' if addr | ipv4 else '' %}
+{%   set rule = '-s ' ~ addr ~ ' -p tcp --dport ' ~ ssh_port ~ ct ~ ' -j ACCEPT'
+ExecStartPre=!{{ ipt }} -A INPUT {{ rule }}
+ExecStopPost=!{{ ipt }} -D INPUT {{ rule }}
 {% endfor %}
