@@ -11,7 +11,7 @@ Only tested on Debian stable, for now.
 + `ssh_extra_cfg`: any extra lines to put in client config
 
 ## Dependencies
-None.
++ [ho-ansible.systemd](https://github.com/ho-ansible/systemd)
 
 ## Regenerating host keys
 This should be done by the openssh package already:

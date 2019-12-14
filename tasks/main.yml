@@ -16,16 +16,22 @@
   tags:
     - config
   template:
-    src: "{{ item.src }}.j2"
-    dest: "{{ item.dst }}/{{ item.src }}"
+    src: "{{ item }}.j2"
+    dest: "/etc/ssh/{{ item }}"
   loop:
-    - src: sshd_config
-      dst: /etc/ssh
-    - src: ssh_config
-      dst: /etc/ssh
-    - src: iptables.conf
-      dst: "{{ ssh_dropin }}"
+    - sshd_config
+    - ssh_config
   notify: restart ssh
+
+- name: ssh | firewall config
+  tags:
+    - config
+  template:
+    src: iptables.conf.j2
+    dest: "{{ ssh_dropin }}/iptables.conf"
+  notify:
+    - daemon-reload
+    - restart ssh
 
 - name: ssh | service
   tags:

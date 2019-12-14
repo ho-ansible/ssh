@@ -16,4 +16,6 @@ galaxy_info:
     - login
     - user
 
-dependencies: []
+dependencies:
+  - role: systemd
+
