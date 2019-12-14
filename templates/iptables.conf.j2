@@ -1,10 +1,24 @@
 # {{ ansible_managed }}
+# Firewall rules for ssh service
+{% set ipt = '/usr/sbin/iptables' %}
+{% set ch = 'in_ssh' %}
+{% set in_rule = '-p tcp --dport ' ~ ssh_port ~ ' -m conntrack --ctstate -NEW -j ' ~ ch %}
+
 [Service]
+# Setup ref to chain
+ExecStartPre=!-{{ ipt }} -N {{ ch }}
+ExecStartPre=!{{ ipt }} -F {{ ch }}
+ExecStartPre=!-{{ ipt }} -D INPUT {{ in_rule }}
+ExecStartPre=!{{ ipt }} -A INPUT {{ in_rule }}
+
 {% for addr in ssh_whitelist | ipaddr %}
-{%   set ipt = 'iptables' if addr | ipv4 else 'ip6tables' %}
-{%   set ipt = '/usr/sbin/' ~ ipt %}
-{%   set ct = ' -m conntrack --ctstate NEW' if addr | ipv4 else '' %}
-{%   set rule = '-s ' ~ addr ~ ' -p tcp --dport ' ~ ssh_port ~ ct ~ ' -j ACCEPT' %}
-ExecStartPre=!{{ ipt }} -A INPUT {{ rule }}
-ExecStopPost=!{{ ipt }} -D INPUT {{ rule }}
+ExecStartPre=!{{ ipt }} -A {{ ch }} -s {{ addr }} -j ACCEPT
 {% endfor %}
+{% for rule in ssh_extra_iptables %}
+ExecStartPre=!-{{ ipt }} -A {{ ch }} {{ rule }}
+{% endfor %}
+
+# Cleanup: unref, flush, delete
+ExecStopPost=!-{{ ipt }} -D INPUT {{ in_rule }}
+ExecStopPost=!-{{ ipt }} -F {{ ch }}
+ExecStopPost=!-{{ ipt }} -X {{ ch }}
