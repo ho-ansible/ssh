@@ -2,7 +2,7 @@
 # Firewall rules for ssh service
 {% set ipt = '/usr/sbin/iptables' %}
 {% set ch = 'in_ssh' %}
-{% set in_rule = '-p tcp --dport ' ~ ssh_port ~ ' -m conntrack --ctstate -NEW -j ' ~ ch %}
+{% set in_rule = '-p tcp --dport ' ~ ssh_port ~ ' -m conntrack --ctstate NEW -j ' ~ ch %}
 
 [Service]
 # Setup ref to chain
