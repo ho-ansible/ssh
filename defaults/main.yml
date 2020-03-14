@@ -4,3 +4,4 @@ ssh_whitelist:
   - "0.0.0.0/0"
   - "::/0"
 ssh_extra_cfg:
+ssh_extra_iptables: []
