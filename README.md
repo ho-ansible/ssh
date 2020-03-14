@@ -9,6 +9,7 @@ Only tested on Debian stable, for now.
 + `ssh_whitelist` (default: all): allow (via firewall) only these
   hosts/subnets to connect to server.  Either IPv4 or IPv6 are ok.
 + `ssh_extra_cfg`: any extra lines to put in client config
++ `ssh_extra_iptables`: list of strings to add to firewall chain
 
 ## Dependencies
 + [ho-ansible.systemd](https://github.com/ho-ansible/systemd)
