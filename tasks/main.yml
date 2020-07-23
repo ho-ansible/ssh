@@ -9,7 +9,7 @@
 
 - name: ssh | systemd service drop-in dir
   file:
-    path: "{{ ssh_dropin }}"
+    path: "{{ ssh_dropin | dirname }}"
     state: directory
 
 - name: ssh | config
@@ -28,7 +28,7 @@
     - config
   template:
     src: iptables.conf.j2
-    dest: "{{ ssh_dropin }}/iptables.conf"
+    dest: "{{ ssh_dropin }}"
   notify:
     - daemon-reload
     - restart ssh
