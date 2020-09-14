@@ -14,24 +14,24 @@
 
 - name: ssh | config
   tags:
-    - config
+  - config
   template:
     src: "{{ item }}.j2"
     dest: "/etc/ssh/{{ item }}"
   loop:
-    - sshd_config
-    - ssh_config
+  - sshd_config
+  - ssh_config
   notify: restart ssh
 
 - name: ssh | firewall config
   tags:
-    - config
+  - config
   template:
     src: iptables.conf.j2
     dest: "{{ ssh_dropin }}"
   notify:
-    - daemon-reload
-    - restart ssh
+  - daemon-reload
+  - restart ssh
 
 - name: ssh | service
   tags:
