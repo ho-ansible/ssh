@@ -7,11 +7,6 @@
     name: openssh-server
   notify: restart ssh
 
-- name: ssh | systemd service drop-in dir
-  file:
-    path: "{{ ssh_dropin | dirname }}"
-    state: directory
-
 - name: ssh | config
   tags:
   - config
@@ -23,12 +18,17 @@
   - ssh_config
   notify: restart ssh
 
+- name: ssh | firewall config dir
+  file:
+    path: "{{ ssh_iptables_conf | dirname }}"
+    state: directory
+
 - name: ssh | firewall config
   tags:
   - config
   template:
     src: iptables.conf.j2
-    dest: "{{ ssh_dropin }}"
+    dest: "{{ ssh_iptables_conf }}"
   notify:
   - daemon-reload
   - restart ssh
