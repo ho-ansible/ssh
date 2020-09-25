@@ -11,7 +11,7 @@ ExecStartPre=!{{ ipt }} -F {{ ch }}
 ExecStartPre=!-{{ ipt }} -D INPUT {{ in_rule }}
 ExecStartPre=!{{ ipt }} -A INPUT {{ in_rule }}
 
-{% for addr in ssh_whitelist | ipv4 %}
+{% for addr in ssh_allow | ipv4 %}
 ExecStartPre=!{{ ipt }} -A {{ ch }} -s {{ addr }} -j ACCEPT
 {% endfor %}
 {% for rule in ssh_extra_iptables %}
@@ -23,7 +23,7 @@ ExecStopPost=!-{{ ipt }} -D INPUT {{ in_rule }}
 ExecStopPost=!-{{ ipt }} -F {{ ch }}
 ExecStopPost=!-{{ ipt }} -X {{ ch }}
 
-{% if ssh_whitelist | ipv6 %}
+{% if ssh_allow | ipv6 %}
 {% set ip6t = '/usr/sbin/ip6tables' %}
 
 # IPv6
@@ -32,7 +32,7 @@ ExecStartPre= !{{ ip6t }} -F {{ ch }}
 ExecStartPre=-!{{ ip6t }} -D INPUT {{ in_rule }}
 ExecStartPre= !{{ ip6t }} -A INPUT {{ in_rule }}
 
-{% for addr in ssh_whitelist | ipv6 %}
+{% for addr in ssh_allow | ipv6 %}
 ExecStartPre= !{{ ip6t }} -A {{ ch }} -s {{ addr }} -j ACCEPT
 {% endfor %}
 
