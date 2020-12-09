@@ -12,7 +12,7 @@ ExecStartPre=!-{{ ipt }} -D INPUT {{ in_rule }}
 ExecStartPre=!{{ ipt }} -A INPUT {{ in_rule }}
 
 {% for addr in ssh_allow | ipv4 %}
-ExecStartPre=!{{ ipt }} -A {{ ch }} -s {{ addr }} -j ACCEPT
+ExecStartPre=!-{{ ipt }} -A {{ ch }} -s {{ addr }} -j ACCEPT
 {% endfor %}
 {% for rule in ssh_extra_iptables %}
 ExecStartPre=!-{{ ipt }} -A {{ ch }} {{ rule }}
