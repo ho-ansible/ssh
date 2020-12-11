@@ -2,9 +2,9 @@
 # Configure template role
 # Replace 'all' with your own inventory group
 ---
-- name: template | template role
+- name: ssh | remote login
   hosts: all
   roles:
-  - role: template
+  - role: ssh
     tags:
-    - template
+    - ssh
