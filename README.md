@@ -1,19 +1,6 @@
 # Ansible role: ssh
 Configure OpenSSH client/server
 
-## Requirements
-Only tested on Debian stable, for now.
-
-## Role variables
-+ `ssh_port` (default: 22): TCP port server listens on
-+ `ssh_allow` (default: all): allow (via firewall) only these
-  hosts/subnets to connect to server.  Either IPv4 or IPv6 are ok.
-+ `ssh_extra_cfg`: any extra lines to put in client config
-+ `ssh_extra_iptables`: list of strings to add to firewall chain
-
-## Dependencies
-+ [ho-ansible.systemd](https://github.com/ho-ansible/systemd)
-
 ## Regenerating host keys
 This should be done by the openssh package already:
 ```
@@ -31,8 +18,25 @@ ssh-keygen -t ed25519 -o -a 100
 ssh-keygen -t rsa -b 4096 -o -a 100
 ```
 
+## Requirements
+Only tested on Debian stable, for now.
+
+## Role variables
++ `ssh_port` (default: 22): TCP port server listens on
++ `ssh_allow` (default: all): allow (via firewall) only these
+  hosts/subnets to connect to server.  Either IPv4 or IPv6 are ok.
++ `ssh_extra_cfg`: any extra lines to put in client config
++ `ssh_extra_iptables`: list of strings to add to firewall chain
+
+## Playbooks
++ `main.yml`: apply role
++ `uninstall.yml`: remove. Run before removing config from inventory.
+
+## Dependencies
++ [ho-ansible.systemd](https://github.com/ho-ansible/systemd)
+
 ## License
-MIT
++ Ansible role licensed [MIT](LICENSE)
 
 ## Author Information
-Sean Ho, https://github.com/ho-ansible/
++ Ansible role by [Sean Ho](https://github.com/ho-ansible/)
