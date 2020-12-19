@@ -1,7 +1,7 @@
 ---
 ssh_port: 22
 ssh_allow:
-  - "0.0.0.0/0"
-  - "::/0"
+- "0.0.0.0/0"
+- "::/0"
 ssh_extra_cfg:
 ssh_extra_iptables: []
