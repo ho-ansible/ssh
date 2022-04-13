@@ -7,15 +7,19 @@
     name: openssh-server
   notify: restart ssh
 
-- name: ssh | config
+- name: ssh | client config
   tags:
   - config
   template:
-    src: "{{ item }}.j2"
-    dest: "/etc/ssh/{{ item }}"
-  loop:
-  - sshd_config
-  - ssh_config
+    src: ssh_config.j2
+    dest: /etc/ssh/ssh_config
+
+- name: ssh | server config
+  tags:
+  - config
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
   notify: restart ssh
 
 - name: ssh | firewall config dir
